@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Funny Question</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      overflow: hidden;
+    }
+    #yesBtn, #noBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 20px;
+      cursor: pointer;
+      position: absolute;
+    }
+    #noBtn {
+      left: 45%;
+      top: 60%;
+    }
+    #yesBtn {
+      left: 55%;
+      top: 60%;
+    }
+    #message {
+      margin-top: 50px;
+      font-size: 20px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>gwapo ko?</h2>
+  <button id="yesBtn">Yes</button>
+  <button id="noBtn">No</button>
+  <div id="message"></div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+
+    noBtn.addEventListener("click", () => {
+      message.textContent = "thank you for being honest";
+    });
+
+    function moveYes() {
+      const rect = yesBtn.getBoundingClientRect();
+      const newLeft = Math.random() * (window.innerWidth - rect.width);
+      const newTop = Math.random() * (window.innerHeight - rect.height);
+      yesBtn.style.left = newLeft + "px";
+      yesBtn.style.top = newTop + "px";
+    }
+
+    // PC: run away when mouse gets close
+    document.addEventListener("mousemove", (e) => {
+      const rect = yesBtn.getBoundingClientRect();
+      const offset = 80; 
+      if (
+        e.clientX > rect.left - offset &&
+        e.clientX < rect.right + offset &&
+        e.clientY > rect.top - offset &&
+        e.clientY < rect.bottom + offset
+      ) {
+        moveYes();
+      }
+    });
+
+    // Phone: run away when finger touches near Yes
+    document.addEventListener("touchstart", (e) => {
+      const touch = e.touches[0];
+      const rect = yesBtn.getBoundingClientRect();
+      const offset = 120; // bigger buffer for fingers
+      if (
+        touch.clientX > rect.left - offset &&
+        touch.clientX < rect.right + offset &&
+        touch.clientY > rect.top - offset &&
+        touch.clientY < rect.bottom + offset
+      ) {
+        moveYes();
+      }
+    });
+
+    // Extra safeguard: if somehow clicked, instantly move
+    yesBtn.addEventListener("click", moveYes);
+  </script>
+</body>
+</html>
